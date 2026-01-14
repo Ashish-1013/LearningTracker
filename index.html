@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ashish – Learning Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    /* Modern Gradient Theme */
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --sidebar-gradient: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    --card-gradient: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+    --accent-primary: #7c3aed;
+    --accent-secondary: #ec4899;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-light: #9ca3af;
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 5px 20px rgba(0, 0, 0, 0.05);
+    --radius-xl: 24px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+body.dark {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    --sidebar-gradient: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+    --card-gradient: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-light: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    line-height: 1.7;
+    transition: var(--transition);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* LOGIN SCREEN - Glassmorphism Design */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f43f5e 100%);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-xl);
+    padding: 3rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.user-avatar::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite linear;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.login-card h1 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.login-card p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.input-group i {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 1.25rem 1.5rem 1.25rem 4rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.login-card input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.login-card input:focus {
+    outline: none;
+    border-color: white;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: 0.5s;
+}
+
+.login-btn:hover::before {
+    left: 100%;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.login-btn:active {
+    transform: translateY(-1px);
+}
+
+.error-message {
+    color: #fecaca;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    min-height: 1.5rem;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* HEADER - Glassmorphism */
+.app-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar-sm {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-info h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, white, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-info p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.icon-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
+.icon-btn:hover::before {
+    left: 100%;
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* MAIN LAYOUT */
+.app-container {
+    display: flex;
+    min-height: calc(100vh - 76px);
+    padding: 2rem;
+    gap: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* SIDEBAR - Modern Design */
+.sidebar {
+    width: 320px;
+    background: var(--sidebar-gradient);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    flex-shrink: 0;
+    max-height: calc(100vh - 120px);
+    position: sticky;
+    top: 96px;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #667eea, #764ba2);
+    border-radius: 3px;
+}
+
+.sidebar-header {
+    margin-bottom: 2rem;
+}
+
+.sidebar-header h3 {
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar-header h3 i {
+    color: #8b5cf6;
+}
+
+.progress-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+#percent {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.progress-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #ec4899);
+    border-radius: 5px;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: progressShine 2s infinite;
+}
+
+@keyframes progressShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-btn {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.action-btn i {
+    font-size: 1.2rem;
+    color: #8b5cf6;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+.phase-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.phase-item {
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: var(--transition);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.phase-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: 0.5s;
+}
+
+.phase-item:hover::before {
+    left: 100%;
+}
+
+.phase-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+.phase-item.active {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+    border-color: rgba(139, 92, 246, 0.5);
+    color: white;
+}
+
+.phase-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color), rgba(var(--color-rgb), 0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.phase-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.phase-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.phase-subtitle {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.phase-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.content-header {
+    background: var(--card-gradient);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideInDown 0.6s ease;
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.header-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-text p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.view-controls {
+    display: flex;
+    gap: 0.75rem;
+    background: rgba(124, 58, 237, 0.1);
+    padding: 0.5rem;
+    border-radius: var(--radius-lg);
+}
+
+.view-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.view-btn.active {
+    background: white;
+    color: var(--accent-primary);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--accent-primary);
+}
+
+.view-btn:hover:not(.active) {
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+/* TOPIC FOCUS VIEW */
+.topic-focus-view {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Topic Content */
+.topic-content {
+    background: var(--card-gradient);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(124, 58, 237, 0.1);
+}
+
+.topic-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.topic-tags {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.tag {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.topic-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--card-gradient);
+    border: 2px solid rgba(124, 58, 237, 0.2);
+    color: var(--accent-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.action-icon:hover {
+    background: var(--accent-primary);
+    color: white;
+    transform: rotate(15deg);
+}
+
+.progress-display {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(124, 58, 237, 0.05);
+    border-radius: var(--radius-lg);
+    border: 2px dashed rgba(124, 58, 237, 0.2);
+}
+
+.progress-text-large {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.progress-circle {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+
+.progress-ring-background {
+    stroke: rgba(124, 58, 237, 0.1);
+}
+
+.progress-ring-foreground {
+    stroke: url(#progress-gradient);
+    stroke-dasharray: 251;
+    stroke-dashoffset: calc(251 - (251 * var(--progress)) / 100);
+    transition: stroke-dashoffset 1s ease;
+}
+
+.progress-percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtopics-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title i {
+    color: var(--accent-primary);
+}
+
+.subtopics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.subtopic-card {
+    background: var(--card-gradient);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    border: 2px solid rgba(124, 58, 237, 0.1);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.subtopic-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.subtopic-card:hover::before {
+    opacity: 1;
+}
+
+.subtopic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(124, 58, 237, 0.3);
+}
+
+.subtopic-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.subtopic-checkbox input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid rgba(124, 58, 237, 0.3);
+    cursor: pointer;
+    appearance: none;
+    position: relative;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.subtopic-checkbox input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-color: transparent;
+}
+
+.subtopic-checkbox input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.subtopic-content {
+    flex: 1;
+}
+
+.subtopic-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    transition: var(--transition);
+}
+
+.subtopic-card.completed .subtopic-title {
+    color: var(--accent-success);
+    text-decoration: line-through;
+}
+
+/* Notes Sidebar */
+.notes-sidebar {
+    background: var(--card-gradient);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+
+.notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.notes-header h3 {
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-note-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.add-note-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.add-note-btn:active {
+    transform: translateY(-1px);
+}
+
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.notes-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notes-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 3px;
+}
+
+.note-card {
+    background: linear-gradient(135deg, #fff9db, #ffe066);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    animation: noteAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: var(--transition);
+    cursor: grab;
+    border: 1px solid rgba(255, 224, 102, 0.3);
+    min-height: 120px;
+}
+
+@keyframes noteAppear {
+    from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+.note-card:nth-child(2n) {
+    background: linear-gradient(135deg, #dbeafe, #93c5fd);
+    border-color: rgba(147, 197, 253, 0.3);
+}
+
+.note-card:nth-child(3n) {
+    background: linear-gradient(135deg, #fce7f3, #f9a8d4);
+    border-color: rgba(249, 168, 212, 0.3);
+}
+
+.note-card:nth-child(4n) {
+    background: linear-gradient(135deg, #dcfce7, #86efac);
+    border-color: rgba(134, 239, 172, 0.3);
+}
+
+.note-card:hover {
+    transform: translateY(-3px) rotate(1deg);
+    box-shadow: var(--shadow-md);
+}
+
+.note-text {
+    width: 100%;
+    min-height: 80px;
+    background: transparent;
+    border: none;
+    color: #1f2937;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: none;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    margin-bottom: 0.75rem;
+}
+
+.note-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.note-date {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.5);
+    font-family: 'Dancing Script', cursive;
+}
+
+.note-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.note-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.note-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+}
+
+.note-btn.delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--accent-danger);
+}
+
+.note-pin {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* All Topics View */
+.all-topics-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.phase-card {
+    background: var(--card-gradient);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+}
+
+.phase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color), rgba(var(--color-rgb), 0.5));
+}
+
+.phase-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(124, 58, 237, 0.2);
+}
+
+.phase-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.phase-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--color), rgba(var(--color-rgb), 0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.phase-card-title {
+    flex: 1;
+}
+
+.phase-card-title h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.phase-card-title p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.topic-item {
+    background: rgba(124, 58, 237, 0.05);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(124, 58, 237, 0.1);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.topic-item:hover {
+    background: rgba(124, 58, 237, 0.1);
+    transform: translateX(5px);
+}
+
+.topic-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.topic-item-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.topic-item-progress {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.3;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 1200px) {
+    .app-container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-height: none;
+        position: static;
+        margin-bottom: 1rem;
+    }
+    
+    .topic-focus-view {
+        grid-template-columns: 1fr;
+    }
+    
+    .all-topics-view {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .login-card {
+        padding: 2rem;
+    }
+    
+    .app-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .header-left {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .content-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .header-title {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .view-controls {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .subtopics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .all-topics-view {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1.5rem;
+    }
+    
+    .topic-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .topic-actions {
+        align-self: flex-end;
+    }
+}
+
+/* Floating Elements */
+.floating-element {
+    position: fixed;
+    z-index: -1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+    filter: blur(40px);
+    animation: float 20s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(20px, 20px) rotate(90deg); }
+    50% { transform: translate(0, 40px) rotate(180deg); }
+    75% { transform: translate(-20px, 20px) rotate(270deg); }
+}
+
+.floating-1 {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.floating-2 {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 10%;
+    animation-delay: -5s;
+}
+
+.floating-3 {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 15%;
+    animation-delay: -10s;
+}
+</style>
+</head>
+
+<body>
+<!-- Floating Background Elements -->
+<div class="floating-element floating-1"></div>
+<div class="floating-element floating-2"></div>
+<div class="floating-element floating-3"></div>
+
+<!-- LOGIN SCREEN -->
+<div id="loginBox" class="login-container">
+    <div class="login-card">
+        <div class="avatar-container">
+            <div class="user-avatar">A</div>
+        </div>
+        <h1>Welcome Back, Ashish!</h1>
+        <p>Continue your learning journey with personalized progress tracking</p>
+        
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input id="pwd" type="password" placeholder="Enter your secret passcode">
+        </div>
+        
+        <button class="login-btn" onclick="login()">
+            <i class="fas fa-arrow-right-to-bracket"></i> Enter Learning Portal
+        </button>
+        <p id="error" class="error-message"></p>
+        
+        <div style="margin-top: 2rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-graduation-cap"></i> Mastering Full-Stack Development
+        </div>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="hidden">
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="user-avatar-sm">A</div>
+            <div class="header-info">
+                <h1>Ashish's Learning Dashboard</h1>
+                <p>Full-Stack Development Journey • Personal LMS</p>
+            </div>
+        </div>
+        
+        <div class="header-actions">
+            <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="icon-btn" onclick="showAllTopics()" title="All Topics">
+                <i class="fas fa-th-large"></i>
+            </button>
+            <button class="icon-btn" onclick="logout()" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- MAIN LAYOUT -->
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-chart-line"></i> Learning Progress</h3>
+                <div class="progress-container">
+                    <div class="progress-text">
+                        <span>Overall Completion</span>
+                        <span id="percent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="action-btn" onclick="showAllTopics()">
+                    <i class="fas fa-th-large"></i>
+                    All Topics
+                </button>
+                <button class="action-btn" onclick="showNotesView()">
+                    <i class="fas fa-sticky-note"></i>
+                    My Notes
+                </button>
+            </div>
+            
+            <div class="phase-list" id="nav">
+                <!-- Navigation will be generated here -->
+            </div>
+        </aside>
+        
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- Content Header -->
+            <div class="content-header">
+                <div class="header-title">
+                    <div class="header-icon" id="headerIcon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2 id="contentTitle">Welcome to Your Learning Journey</h2>
+                        <p id="contentSubtitle">Select a topic to begin your learning adventure</p>
+                    </div>
+                </div>
+                
+                <div class="view-controls">
+                    <button class="view-btn active" onclick="setViewMode('focus')">
+                        <i class="fas fa-eye"></i> Focus View
+                    </button>
+                    <button class="view-btn" onclick="setViewMode('all')">
+                        <i class="fas fa-layer-group"></i> All Topics
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Topic Focus View -->
+            <div id="topicFocusView" class="hidden">
+                <div class="topic-focus-view">
+                    <!-- Left Column: Topic Content -->
+                    <div class="topic-content">
+                        <div class="topic-header">
+                            <div>
+                                <h1 class="topic-title" id="topicTitle">Select a Topic</h1>
+                                <div class="topic-tags" id="topicTags"></div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="action-icon" onclick="toggleSubtopics()" title="Toggle Subtopics">
+                                    <i class="fas fa-list-check"></i>
+                                </button>
+                                <button class="action-icon" onclick="toggleDetails()" title="Show Details">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-display">
+                            <div class="progress-text-large">Topic Progress</div>
+                            <div class="progress-circle">
+                                <svg class="progress-ring" width="80" height="80">
+                                    <defs>
+                                        <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#7c3aed" />
+                                            <stop offset="100%" stop-color="#ec4899" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="progress-ring-background" cx="40" cy="40" r="36" />
+                                    <circle class="progress-ring-foreground" cx="40" cy="40" r="36" />
+                                </svg>
+                                <div class="progress-percent" id="topicProgressPercent">0%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="subtopics-section">
+                            <h3 class="section-title"><i class="fas fa-list-check"></i> Subtopics to Master</h3>
+                            <div class="subtopics-grid" id="subtopicsGrid">
+                                <!-- Subtopics will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Notes Sidebar -->
+                    <div class="notes-sidebar">
+                        <div class="notes-header">
+                            <h3><i class="fas fa-sticky-note"></i> My Notes</h3>
+                            <button class="add-note-btn" onclick="addNote()">
+                                <i class="fas fa-plus"></i> Add Note
+                            </button>
+                        </div>
+                        <div class="notes-container" id="notesContainer">
+                            <!-- Notes will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- All Topics View -->
+            <div id="allTopicsView" class="hidden">
+                <div class="all-topics-view" id="allTopicsContainer">
+                    <!-- All topics will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Empty State (Initially shown) -->
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <h3>Ready to Learn?</h3>
+                <p>Select a topic from the sidebar to begin your learning journey</p>
+            </div>
+        </main>
+    </div>
+</div>
+
+<svg width="0" height="0">
+    <defs>
+        <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7c3aed" />
+            <stop offset="100%" stop-color="#ec4899" />
+        </linearGradient>
+    </defs>
+</svg>
+
+<script>
+// AUTHENTICATION
+const PASSWORD = "9777641455";
+
+function login() {
+    const pwdInput = document.getElementById('pwd');
+    const errorMsg = document.getElementById('error');
+    
+    if (pwdInput.value === PASSWORD) {
+        localStorage.setItem("login", "1");
+        showApp();
+        errorMsg.textContent = "";
+    } else {
+        errorMsg.textContent = "Incorrect passcode. Please try again.";
+        pwdInput.focus();
+        pwdInput.value = "";
+        
+        // Add shake animation
+        pwdInput.style.animation = "shake 0.5s";
+        setTimeout(() => pwdInput.style.animation = "", 500);
+    }
+}
+
+function showApp() {
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    renderDashboard();
+}
+
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
+
+if (localStorage.getItem("login")) {
+    showApp();
+}
+
+// THEME TOGGLE
+function toggleTheme() {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem("theme", isDark);
+    
+    const themeIcon = document.querySelector('.fa-moon');
+    themeIcon.classList.toggle('fa-moon', !isDark);
+    themeIcon.classList.toggle('fa-sun', isDark);
+}
+
+if (localStorage.getItem("theme") === "true") {
+    document.body.classList.add('dark');
+    const themeIcon = document.querySelector('.fa-moon');
+    if (themeIcon) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    }
+}
+
+// SYLLABUS DATA
+const syllabus = [
+    {
+        id: "html",
+        phase: "PHASE 1: HTML Fundamentals",
+        icon: "fab fa-html5",
+        color: "#e34c26",
+        topics: [{
+            id: "html",
+            title: "HTML Fundamentals",
+            important: true,
+            subs: [
+                "HTML definition", "History of HTML", "HTML versions",
+                "Client-server basics", "Browser rendering flow",
+                "HTML file structure", "DOCTYPE declaration",
+                "html tag", "head tag", "body tag",
+                "meta charset", "meta viewport", "meta description",
+                "title tag", "favicon",
+                "Semantic tags", "header tag", "footer tag", "nav tag",
+                "section tag", "article tag", "aside tag", "main tag",
+                "div vs semantic elements",
+                "h1 to h6 hierarchy", "p tag", "span tag",
+                "strong vs b", "em vs i",
+                "img tag", "src attribute", "alt attribute",
+                "audio tag", "video tag", "controls attribute",
+                "form tag", "action attribute", "method attribute",
+                "input types", "label association", "placeholder",
+                "required validation", "pattern validation",
+                "button vs submit",
+                "table tag", "thead", "tbody", "tr", "td", "th",
+                "ul / ol / li", "anchor tag", "target attribute",
+                "absolute vs relative URLs",
+                "accessibility basics", "aria-label",
+                "tab index", "screen readers",
+                "SEO structure", "heading SEO", "semantic SEO"
+            ],
+            questions: [
+                "Why semantic HTML?",
+                "div vs section?",
+                "How HTML helps SEO?",
+                "Why alt attribute is important?"
+            ],
+            task: "Build a complete semantic webpage with form, media, table & SEO tags"
+        }]
+    },
+    {
+        id: "css",
+        phase: "PHASE 2: CSS Styling",
+        icon: "fab fa-css3-alt",
+        color: "#264de4",
+        topics: [{
+            id: "css",
+            title: "CSS Fundamentals",
+            important: true,
+            subs: [
+                "What is CSS", "CSS history", "How CSS works",
+                "Inline CSS", "Internal CSS", "External CSS",
+                "CSS syntax", "Selectors", "Class selector", "ID selector",
+                "Attribute selector", "Pseudo-class", "Pseudo-element",
+                "Specificity rules", "Cascade", "Inheritance",
+                "Box model", "Content", "Padding", "Border", "Margin",
+                "box-sizing",
+                "display types", "block", "inline", "inline-block", "none",
+                "position static", "relative", "absolute", "fixed", "sticky",
+                "z-index", "overflow",
+                "Flexbox container", "flex-direction",
+                "justify-content", "align-items", "align-self",
+                "flex-wrap", "gap",
+                "CSS Grid", "grid-template-rows", "grid-template-columns",
+                "grid-area", "grid-gap",
+                "Responsive design", "mobile-first",
+                "media queries", "breakpoints",
+                "CSS units", "px", "%", "em", "rem", "vh", "vw",
+                "Colors", "hex", "rgb", "rgba", "hsl",
+                "Transitions", "Animations", "Keyframes",
+                "Shadows", "Gradients"
+            ],
+            questions: [
+                "Flexbox vs Grid?",
+                "Specificity order?",
+                "Mobile-first design?"
+            ],
+            task: "Create a fully responsive dashboard using Flexbox & Grid"
+        }]
+    },
+    {
+        id: "js",
+        phase: "PHASE 3: JavaScript Core",
+        icon: "fab fa-js-square",
+        color: "#f0db4f",
+        topics: [{
+            id: "js",
+            title: "JavaScript Core",
+            important: true,
+            subs: [
+                "What is JavaScript", "JS engines", "How JS runs",
+                "Execution context", "Call stack",
+                "Variables", "var", "let", "const",
+                "Data types", "Primitive", "Reference",
+                "Type coercion", "Truthy & Falsy",
+                "Operators", "Comparison", "Logical",
+                "Functions", "Function declaration",
+                "Function expression", "Arrow functions",
+                "Scope", "Global", "Function", "Block",
+                "Hoisting", "Closures",
+                "Arrays", "Array methods", "map", "filter", "reduce",
+                "Objects", "Object keys", "Object values",
+                "Destructuring", "Spread operator",
+                "DOM tree", "getElementById",
+                "querySelector", "querySelectorAll",
+                "DOM manipulation", "innerHTML", "textContent",
+                "Create elements", "Remove elements",
+                "Events", "Event listeners",
+                "Event bubbling", "Event capturing",
+                "Event delegation",
+                "Synchronous JS", "Asynchronous JS",
+                "Web APIs", "Callback queue",
+                "Event loop",
+                "Promises", "Promise states",
+                "Async/await", "Try-catch",
+                "localStorage", "sessionStorage",
+                "JSON parse", "JSON stringify"
+            ],
+            questions: [
+                "What is closure?",
+                "Explain event loop?",
+                "Promise vs async/await?",
+                "var vs let vs const?"
+            ],
+            task: "Build Todo app with CRUD + localStorage"
+        }]
+    },
+    {
+        id: "react",
+        phase: "PHASE 4: React Framework",
+        icon: "fab fa-react",
+        color: "#61dafb",
+        topics: [{
+            id: "react",
+            title: "React Fundamentals",
+            important: true,
+            subs: [
+                "Why React", "Problems React solves",
+                "SPA concept", "CSR vs SSR",
+                "Virtual DOM", "Diffing algorithm",
+                "JSX rules", "JSX vs HTML",
+                "Components", "Functional components",
+                "Props", "Props drilling",
+                "State", "useState hook",
+                "Re-rendering logic",
+                "useEffect hook", "Dependency array",
+                "Component lifecycle",
+                "Controlled components", "Uncontrolled components",
+                "Forms handling", "Input binding",
+                "Conditional rendering",
+                "List rendering", "Keys",
+                "React Router", "BrowserRouter",
+                "Routes", "Route", "useParams",
+                "Navigation", "Link", "NavLink",
+                "Protected routes", "Auth guard",
+                "Context API", "Global state",
+                "Performance optimization",
+                "React.memo", "useCallback", "useMemo",
+                "Lazy loading", "Suspense",
+                "Code splitting",
+                "API integration", "Axios", "Fetch",
+                "Environment variables"
+            ],
+            questions: [
+                "Why React is fast?",
+                "Props vs State?",
+                "Virtual DOM vs Real DOM?",
+                "useEffect dependency array?"
+            ],
+            task: "Build full React LMS frontend with routing & API integration"
+        }]
+    },
+    {
+        id: "node",
+        phase: "PHASE 5: Node.js Backend",
+        icon: "fab fa-node-js",
+        color: "#68a063",
+        topics: [{
+            id: "node",
+            title: "Node & Express",
+            important: true,
+            subs: [
+                "What is Node.js", "Why Node",
+                "V8 engine", "Single-threaded model",
+                "Non-blocking IO", "Event loop",
+                "Node modules", "CommonJS", "ES modules",
+                "NPM", "package.json",
+                "Express framework", "Server creation",
+                "Routing", "Route parameters",
+                "Middleware", "Built-in middleware",
+                "Custom middleware",
+                "Request lifecycle",
+                "REST principles", "HTTP methods",
+                "Status codes",
+                "Authentication", "Authorization",
+                "Password hashing", "bcrypt",
+                "JWT token", "Access token", "Refresh token",
+                "Role-based access",
+                "Environment variables",
+                "Error handling",
+                "API security basics"
+            ],
+            questions: [
+                "Why Node non-blocking?",
+                "What is middleware?",
+                "How JWT works?"
+            ],
+            task: "Build secure REST API with JWT & role-based access"
+        }]
+    },
+    {
+        id: "db",
+        phase: "PHASE 6: Databases",
+        icon: "fas fa-database",
+        color: "#00618a",
+        topics: [{
+            id: "db",
+            title: "MySQL & MongoDB",
+            important: true,
+            subs: [
+                "Database basics", "RDBMS concept",
+                "Tables", "Rows", "Columns",
+                "Primary key", "Foreign key",
+                "Constraints", "Indexes",
+                "Normalization", "1NF", "2NF", "3NF",
+                "CRUD operations",
+                "Joins", "Inner join", "Left join",
+                "Transactions", "ACID properties",
+                "NoSQL concept", "MongoDB basics",
+                "Collections", "Documents", "BSON",
+                "ObjectId", "Schema design",
+                "Indexes", "Aggregation",
+                "Embedding vs referencing",
+                "ORM vs ODM",
+                "Sequelize basics",
+                "Mongoose basics"
+            ],
+            questions: [
+                "SQL vs NoSQL?",
+                "Normalization vs denormalization?"
+            ],
+            task: "Design optimized DB schema for LMS"
+        }]
+    },
+    {
+        id: "spring",
+        phase: "PHASE 7: Spring Boot",
+        icon: "fas fa-leaf",
+        color: "#6db33f",
+        topics: [{
+            id: "spring",
+            title: "Spring Boot Backend",
+            important: true,
+            subs: [
+                "What is Spring", "Spring ecosystem",
+                "Spring vs Spring Boot",
+                "Auto-configuration",
+                "Project structure",
+                "application.properties",
+                "Dependency Injection",
+                "Inversion of Control",
+                "Bean lifecycle",
+                "@Component", "@Service",
+                "@Repository", "@Controller",
+                "@RestController",
+                "RequestMapping", "GetMapping",
+                "PostMapping", "PutMapping", "DeleteMapping",
+                "DTO pattern", "Entity pattern",
+                "ModelMapper",
+                "JPA", "Hibernate",
+                "Entity relationships",
+                "OneToOne", "OneToMany", "ManyToOne", "ManyToMany",
+                "Lazy vs Eager loading",
+                "Pagination", "Sorting",
+                "Exception handling", "Global exception handler",
+                "Spring Security",
+                "Authentication flow",
+                "JWT integration",
+                "Role-based authorization",
+                "CORS configuration"
+            ],
+            questions: [
+                "Why Spring Boot?",
+                "DI vs IoC?",
+                "Controller vs Service?",
+                "Entity vs DTO?",
+                "JWT flow in Spring?"
+            ],
+            task: "Build full Spring Boot backend for LMS"
+        }]
+    },
+    {
+        id: "lms",
+        phase: "PHASE 8: EdTech & LMS",
+        icon: "fas fa-graduation-cap",
+        color: "#8b5cf6",
+        topics: [{
+            id: "lms",
+            title: "SCORM & LMS",
+            important: true,
+            subs: [
+                "What is eLearning",
+                "What is LMS",
+                "LMS architecture",
+                "SCORM overview",
+                "SCORM package structure",
+                "imsmanifest.xml",
+                "SCORM 1.2",
+                "SCORM 2004",
+                "Completion status",
+                "Success status",
+                "Score tracking",
+                "Time tracking",
+                "Suspend data",
+                "LMS API communication",
+                "Course launch flow",
+                "Tracking learner progress",
+                "Assessment & quizzes"
+            ],
+            questions: [
+                "How LMS tracks progress?",
+                "SCORM 1.2 vs 2004?"
+            ],
+            task: "Publish SCORM package & explain LMS tracking flow"
+        }]
+    }
+];
+
+// STORAGE MANAGEMENT
+const PROGRESS_KEY = "lms_progress_v2";
+const NOTES_KEY = "lms_notes_v2";
+
+let progressData = JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
+let notesData = JSON.parse(localStorage.getItem(NOTES_KEY)) || [];
+
+// STATE MANAGEMENT
+let currentPhase = null;
+let currentTopic = null;
+let currentView = 'focus';
+
+// RENDER FUNCTIONS
+function renderDashboard() {
+    renderSidebar();
+    updateOverallProgress();
+    showEmptyState();
+}
+
+function renderSidebar() {
+    const nav = document.getElementById('nav');
+    nav.innerHTML = '';
+    
+    syllabus.forEach((section, index) => {
+        const phaseTotal = calculatePhaseTotal(section);
+        const phaseDone = calculatePhaseDone(section);
+        const phasePercent = phaseTotal > 0 ? Math.round((phaseDone / phaseTotal) * 100) : 0;
+        
+        // Convert hex color to RGB for rgba
+        const hexToRgb = hex => {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `${r}, ${g}, ${b}`;
+        };
+        
+        const phaseItem = document.createElement('div');
+        phaseItem.className = 'phase-item';
+        if (currentPhase?.id === section.id) {
+            phaseItem.classList.add('active');
+        }
+        phaseItem.style.setProperty('--color', section.color);
+        phaseItem.style.setProperty('--color-rgb', hexToRgb(section.color));
+        
+        phaseItem.innerHTML = `
+            <div class="phase-icon">
+                <i class="${section.icon}"></i>
+            </div>
+            <div class="phase-text">
+                <div class="phase-title">${section.phase.split(':')[0]}</div>
+                <div class="phase-subtitle">${section.phase.split(':')[1] || 'Fundamentals'}</div>
+            </div>
+            <div class="phase-badge">${phasePercent}%</div>
+        `;
+        
+        phaseItem.onclick = () => {
+            loadPhase(section);
+            document.querySelectorAll('.phase-item').forEach(item => item.classList.remove('active'));
+            phaseItem.classList.add('active');
+        };
+        
+        nav.appendChild(phaseItem);
+    });
+}
+
+function calculatePhaseTotal(section) {
+    let total = 0;
+    section.topics.forEach(topic => {
+        total += topic.subs.length;
+    });
+    return total;
+}
+
+function calculatePhaseDone(section) {
+    let done = 0;
+    section.topics.forEach(topic => {
+        topic.subs.forEach((sub, subIndex) => {
+            const key = `${section.id}_${topic.id}_${subIndex}`;
+            if (progressData[key]) done++;
+        });
+    });
+    return done;
+}
+
+function loadPhase(section) {
+    currentPhase = section;
+    currentTopic = section.topics[0];
+    loadTopic(section, section.topics[0]);
+}
+
+function loadTopic(section, topic) {
+    currentPhase = section;
+    currentTopic = topic;
+    
+    // Update header
+    document.getElementById('contentTitle').textContent = topic.title;
+    document.getElementById('contentSubtitle').textContent = section.phase;
+    document.getElementById('headerIcon').innerHTML = `<i class="${section.icon}"></i>`;
+    
+    // Calculate topic progress
+    const topicTotal = topic.subs.length;
+    let topicDone = 0;
+    topic.subs.forEach((sub, subIndex) => {
+        const key = `${section.id}_${topic.id}_${subIndex}`;
+        if (progressData[key]) topicDone++;
+    });
+    const topicPercent = topicTotal > 0 ? Math.round((topicDone / topicTotal) * 100) : 0;
+    
+    // Render topic view
+    document.getElementById('emptyState').classList.add('hidden');
+    document.getElementById('topicFocusView').classList.remove('hidden');
+    document.getElementById('allTopicsView').classList.add('hidden');
+    currentView = 'focus';
+    
+    // Update view buttons
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.view-btn:first-child').classList.add('active');
+    
+    // Render topic content
+    renderTopicContent(section, topic, topicPercent);
+    renderNotes();
+}
+
+function renderTopicContent(section, topic, progressPercent) {
+    // Update topic title and tags
+    document.getElementById('topicTitle').textContent = topic.title;
+    const tags = document.getElementById('topicTags');
+    tags.innerHTML = `
+        <span class="tag">${section.phase.split(':')[0]}</span>
+        ${topic.important ? '<span class="tag" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); color: #f59e0b;">⭐ Important</span>' : ''}
+    `;
+    
+    // Update progress circle
+    const progressCircle = document.querySelector('.progress-ring-foreground');
+    progressCircle.style.setProperty('--progress', progressPercent);
+    document.getElementById('topicProgressPercent').textContent = `${progressPercent}%`;
+    
+    // Render subtopics
+    const subtopicsGrid = document.getElementById('subtopicsGrid');
+    subtopicsGrid.innerHTML = '';
+    
+    topic.subs.forEach((sub, subIndex) => {
+        const key = `${section.id}_${topic.id}_${subIndex}`;
+        const isChecked = progressData[key] || false;
+        
+        const subtopicCard = document.createElement('div');
+        subtopicCard.className = `subtopic-card ${isChecked ? 'completed' : ''}`;
+        subtopicCard.innerHTML = `
+            <div class="subtopic-checkbox">
+                <input type="checkbox" id="${key}" ${isChecked ? 'checked' : ''} 
+                       onchange="toggleProgress('${key}', this.checked)">
+                <div class="subtopic-content">
+                    <div class="subtopic-title">${sub}</div>
+                </div>
+            </div>
+        `;
+        subtopicsGrid.appendChild(subtopicCard);
+    });
+}
+
+function renderNotes() {
+    const notesContainer = document.getElementById('notesContainer');
+    const currentTopicId = currentPhase && currentTopic ? `${currentPhase.id}_${currentTopic.id}` : null;
+    
+    // Filter notes for current topic
+    const topicNotes = notesData.filter(note => note.topicId === currentTopicId);
+    
+    if (topicNotes.length === 0) {
+        notesContainer.innerHTML = `
+            <div class="empty-state" style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                <i class="fas fa-sticky-note" style="font-size: 2rem; opacity: 0.3;"></i>
+                <p style="margin-top: 0.5rem;">No notes yet. Add your first note!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    notesContainer.innerHTML = '';
+    topicNotes.forEach((note, index) => {
+        const noteElement = createNoteElement(note, index);
+        notesContainer.appendChild(noteElement);
+    });
+    
+    // Add event listeners for textarea changes
+    setTimeout(() => {
+        document.querySelectorAll('.note-text').forEach((textarea, index) => {
+            textarea.addEventListener('input', function() {
+                const noteIndex = notesData.findIndex(n => n.id === topicNotes[index].id);
+                if (noteIndex !== -1) {
+                    notesData[noteIndex].text = this.value;
+                    saveNotes();
+                }
+            });
+        });
+    }, 100);
+}
+
+function createNoteElement(note, index) {
+    const noteDiv = document.createElement('div');
+    noteDiv.className = 'note-card';
+    noteDiv.innerHTML = `
+        <div class="note-pin"></div>
+        <textarea class="note-text" placeholder="Write your note here...">${note.text}</textarea>
+        <div class="note-footer">
+            <div class="note-date">${formatDate(note.createdAt)}</div>
+            <div class="note-actions">
+                <button class="note-btn delete" onclick="deleteNote('${note.id}')" title="Delete note">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Make note draggable
+    makeDraggable(noteDiv);
+    
+    return noteDiv;
+}
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now - date;
+    
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+    
+    return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+    });
+}
+
+function makeDraggable(element) {
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+    element.onmousedown = dragMouseDown;
+    
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+    
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        element.style.top = (element.offsetTop - pos2) + "px";
+        element.style.left = (element.offsetLeft - pos1) + "px";
+        element.style.position = 'absolute';
+    }
+    
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+        
+        // Return to original position after 2 seconds
+        setTimeout(() => {
+            element.style.position = '';
+            element.style.top = '';
+            element.style.left = '';
+        }, 2000);
+    }
+}
+
+// NOTES MANAGEMENT
+function addNote() {
+    if (!currentPhase || !currentTopic) {
+        alert('Please select a topic first!');
+        return;
+    }
+    
+    const newNote = {
+        id: 'note_' + Date.now(),
+        text: '',
+        topicId: `${currentPhase.id}_${currentTopic.id}`,
+        createdAt: Date.now()
+    };
+    
+    notesData.unshift(newNote);
+    saveNotes();
+    renderNotes();
+    
+    // Focus on the new note
+    setTimeout(() => {
+        const textarea = document.querySelector('.note-text');
+        if (textarea) textarea.focus();
+    }, 100);
+}
+
+function deleteNote(noteId) {
+    if (confirm('Delete this note?')) {
+        notesData = notesData.filter(note => note.id !== noteId);
+        saveNotes();
+        renderNotes();
+    }
+}
+
+function saveNotes() {
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notesData));
+}
+
+// PROGRESS MANAGEMENT
+function toggleProgress(key, isChecked) {
+    progressData[key] = isChecked;
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressData));
+    
+    // Update UI
+    const checkbox = document.getElementById(key);
+    const subtopicCard = checkbox.closest('.subtopic-card');
+    
+    if (isChecked) {
+        subtopicCard.classList.add('completed');
+    } else {
+        subtopicCard.classList.remove('completed');
+    }
+    
+    // Update progress
+    updateOverallProgress();
+    updateTopicProgress();
+}
+
+function updateOverallProgress() {
+    let total = 0;
+    let done = 0;
+    
+    syllabus.forEach(section => {
+        section.topics.forEach(topic => {
+            topic.subs.forEach((sub, subIndex) => {
+                total++;
+                const key = `${section.id}_${topic.id}_${subIndex}`;
+                if (progressData[key]) done++;
+            });
+        });
+    });
+    
+    const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('percent').textContent = `${percent}%`;
+    document.getElementById('fill').style.width = `${percent}%`;
+}
+
+function updateTopicProgress() {
+    if (!currentPhase || !currentTopic) return;
+    
+    const topicTotal = currentTopic.subs.length;
+    let topicDone = 0;
+    currentTopic.subs.forEach((sub, subIndex) => {
+        const key = `${currentPhase.id}_${currentTopic.id}_${subIndex}`;
+        if (progressData[key]) topicDone++;
+    });
+    
+    const progressPercent = topicTotal > 0 ? Math.round((topicDone / topicTotal) * 100) : 0;
+    const progressCircle = document.querySelector('.progress-ring-foreground');
+    if (progressCircle) {
+        progressCircle.style.setProperty('--progress', progressPercent);
+    }
+    document.getElementById('topicProgressPercent').textContent = `${progressPercent}%`;
+}
+
+// VIEW MANAGEMENT
+function setViewMode(mode) {
+    currentView = mode;
+    
+    document.getElementById('topicFocusView').classList.add('hidden');
+    document.getElementById('allTopicsView').classList.add('hidden');
+    document.getElementById('emptyState').classList.add('hidden');
+    
+    // Update view buttons
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    
+    if (mode === 'focus') {
+        document.getElementById('topicFocusView').classList.remove('hidden');
+        document.querySelector('.view-btn:first-child').classList.add('active');
+        if (currentPhase && currentTopic) {
+            renderTopicContent(currentPhase, currentTopic, calculateTopicProgress(currentPhase, currentTopic));
+        }
+    } else if (mode === 'all') {
+        document.getElementById('allTopicsView').classList.remove('hidden');
+        document.querySelector('.view-btn:last-child').classList.add('active');
+        renderAllTopicsView();
+    }
+}
+
+function calculateTopicProgress(section, topic) {
+    const topicTotal = topic.subs.length;
+    let topicDone = 0;
+    topic.subs.forEach((sub, subIndex) => {
+        const key = `${section.id}_${topic.id}_${subIndex}`;
+        if (progressData[key]) topicDone++;
+    });
+    return topicTotal > 0 ? Math.round((topicDone / topicTotal) * 100) : 0;
+}
+
+function showAllTopics() {
+    setViewMode('all');
+}
+
+function showNotesView() {
+    setViewMode('focus');
+}
+
+function showEmptyState() {
+    document.getElementById('emptyState').classList.remove('hidden');
+    document.getElementById('topicFocusView').classList.add('hidden');
+    document.getElementById('allTopicsView').classList.add('hidden');
+}
+
+function renderAllTopicsView() {
+    const container = document.getElementById('allTopicsContainer');
+    container.innerHTML = '';
+    
+    syllabus.forEach(section => {
+        // Convert hex color to RGB
+        const hexToRgb = hex => {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `${r}, ${g}, ${b}`;
+        };
+        
+        const phaseCard = document.createElement('div');
+        phaseCard.className = 'phase-card';
+        phaseCard.style.setProperty('--color', section.color);
+        phaseCard.style.setProperty('--color-rgb', hexToRgb(section.color));
+        
+        let phaseContent = `
+            <div class="phase-card-header">
+                <div class="phase-card-icon">
+                    <i class="${section.icon}"></i>
+                </div>
+                <div class="phase-card-title">
+                    <h3>${section.phase.split(':')[0]}</h3>
+                    <p>${section.phase.split(':')[1] || 'Master the fundamentals'}</p>
+                </div>
+            </div>
+        `;
+        
+        section.topics.forEach(topic => {
+            const progress = calculateTopicProgress(section, topic);
+            phaseContent += `
+                <div class="topic-item" onclick="loadTopic('${section.id}', '${topic.id}'); setViewMode('focus');">
+                    <div class="topic-item-header">
+                        <div class="topic-item-title">${topic.title}</div>
+                        <div class="topic-item-progress">${progress}%</div>
+                    </div>
+                    ${topic.important ? '<div style="font-size: 0.8rem; color: #f59e0b;">⭐ Important Topic</div>' : ''}
+                </div>
+            `;
+        });
+        
+        phaseCard.innerHTML = phaseContent;
+        container.appendChild(phaseCard);
+    });
+}
+
+// Load topic from string (for onclick events)
+function loadTopic(sectionId, topicId) {
+    const section = syllabus.find(s => s.id === sectionId);
+    const topic = section?.topics.find(t => t.id === topicId);
+    if (section && topic) {
+        loadTopic(section, topic);
+    }
+}
+
+// UI INTERACTIONS
+function toggleSubtopics() {
+    const subtopicsGrid = document.getElementById('subtopicsGrid');
+    subtopicsGrid.classList.toggle('hidden');
+}
+
+function toggleDetails() {
+    // For future implementation
+    alert('Detailed information will be shown here in future updates!');
+}
+
+// Make login work on Enter key
+document.getElementById('pwd').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        login();
+    }
+});
+
+// Initialize with first phase selected
+if (syllabus.length > 0) {
+    loadPhase(syllabus[0]);
+}
+</script>
+</body>
+</html>
